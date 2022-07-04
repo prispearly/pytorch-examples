@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 
-from app.torch_utils import transform_image, get_prediction
+from torch_utils import transform_image, get_prediction
 
 app = Flask(__name__)
 
@@ -10,7 +10,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict', methods=['GET','POST'])
 def predict():
     if request.method == 'POST':
         file = request.files.get('file')
@@ -27,3 +27,6 @@ def predict():
             return jsonify(data)
         except:
             return jsonify({'error': 'error during prediction'})
+    return "hello"
+if __name__ == '__main__':
+    app.run(port=3000, debug=True)
